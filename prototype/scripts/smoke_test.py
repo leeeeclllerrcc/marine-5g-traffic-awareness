@@ -26,7 +26,7 @@ def main():
         assert health["ok"] is True
         assert health["author"] == "非增程式柠檬"
         assert health["authorship"] == "本项目原创内容唯一作者与权利主体：非增程式柠檬"
-        assert health["version"] == "0.4"
+        assert health["version"] == "0.5"
         assert state["meta"]["grid_count"] == 144
         assert state["meta"]["active_vessels"] == 80
         assert state["recommendation"]["type"] in {"容量保障", "重点巡检", "常态监测"}

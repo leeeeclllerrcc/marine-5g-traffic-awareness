@@ -1,4 +1,5 @@
 const state = { scenario: "baseline", step: 150, data: null, timer: null, selection: null };
+let loadSequence = 0;
 const scenarioDescriptions = {
   baseline: "拖动时间轴或切换场景，观察流量与轨迹如何联动。",
   fishing_burst: "低速转向船舶增加，捕捞相关通信需求上升。",
@@ -12,10 +13,43 @@ const $ = (id) => document.getElementById(id);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
 const timeLabel = (step) => `${String(Math.floor(step * 5 / 60)).padStart(2, "0")}:${String(step * 5 % 60).padStart(2, "0")}`;
 
+function setRuntimeMode(mode, isOnline) {
+  const runtimeMode = $("runtime-mode");
+  if (!runtimeMode) return;
+  runtimeMode.textContent = mode;
+  runtimeMode.className = isOnline ? "runtime-mode online" : "runtime-mode local";
+}
+
+function staticState() {
+  if (!window.Marine5GStatic) throw new Error("内置演示引擎未加载");
+  return window.Marine5GStatic.buildState(state.scenario, state.step);
+}
+
 async function loadState() {
-  const response = await fetch(`/api/state?scenario=${encodeURIComponent(state.scenario)}&step=${state.step}`);
-  if (!response.ok) throw new Error("状态接口不可用");
-  state.data = await response.json();
+  const requestId = ++loadSequence;
+  const localApi = ["127.0.0.1", "localhost"].includes(window.location.hostname) && window.location.protocol !== "file:";
+  let data;
+  let usedApi = false;
+
+  if (localApi) {
+    try {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 1800);
+      const response = await fetch(`./api/state?scenario=${encodeURIComponent(state.scenario)}&step=${state.step}`, { signal: controller.signal });
+      window.clearTimeout(timeout);
+      if (!response.ok) throw new Error("状态接口不可用");
+      data = await response.json();
+      usedApi = true;
+    } catch (error) {
+      data = staticState();
+    }
+  } else {
+    data = staticState();
+  }
+
+  if (requestId !== loadSequence) return;
+  state.data = data;
+  setRuntimeMode(usedApi ? "本地分析引擎" : "免安装在线演示", !usedApi);
   render();
 }
 
@@ -147,5 +181,17 @@ function stopPlay() { if (state.timer) { clearInterval(state.timer); state.timer
 $("scenario-select").addEventListener("change", (event) => { state.scenario = event.target.value; state.selection = null; state.step = state.scenario === "baseline" ? 150 : 165; loadState().catch(console.error); });
 $("time-slider").addEventListener("input", (event) => { state.step = Number(event.target.value); loadState().catch(console.error); });
 $("play-button").addEventListener("click", togglePlay);
-$("export-button").addEventListener("click", () => { window.location.href = `/api/export?scenario=${encodeURIComponent(state.scenario)}&step=${state.step}`; });
+$("export-button").addEventListener("click", () => {
+  if (!state.data) return;
+  const content = JSON.stringify(state.data, null, 2);
+  const blob = new Blob([content], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `海域感知_${state.scenario}_${timeLabel(state.step).replace(":", "-")}_非增程式柠檬.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1200);
+});
 loadState().catch((error) => { $("detail-content").innerHTML = `<p class="empty-state">平台状态加载失败：${esc(error.message)}</p>`; });

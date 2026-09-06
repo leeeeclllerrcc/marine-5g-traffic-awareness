@@ -1,10 +1,19 @@
 # 海域智能感知与预警平台（试用版）
 
 作者：非增程式柠檬  
-版本：V0.4  
+版本：V0.5
 定位：面向海上通信运营、海洋治理和渔业安全场景的企业试点演示平台，支持从合成数据验证平滑过渡到授权聚合数据接入。
 
-## 一键运行
+## 免安装在线试用
+
+- GitHub Pages：<https://leeeeclllerrcc.github.io/marine-5g-traffic-awareness/>
+- 备用入口：<https://raw.githack.com/leeeeclllerrcc/marine-5g-traffic-awareness/main/>
+
+在线入口使用内置确定性演示引擎，无需Python或本地后台。
+
+## 本地一键运行
+
+回到项目根目录，双击 `双击启动试用平台.cmd`，程序会自动启动服务并打开浏览器。不要先单独访问 `127.0.0.1:8765`；该地址只有本地服务启动后才有效。
 
 在本目录下执行：
 
@@ -12,7 +21,7 @@
 powershell -ExecutionPolicy Bypass -File .\scripts\run_demo.ps1
 ```
 
-然后打开 `http://127.0.0.1:8765/`。
+启动后访问 `http://127.0.0.1:8765/`。
 
 也可以直接执行：
 
@@ -44,7 +53,8 @@ prototype/
 ├─ web/
 │  ├─ index.html           # 平台页面
 │  ├─ styles.css           # 视觉样式
-│  └─ app.js               # 交互逻辑
+│  ├─ static-engine.js     # 免安装在线演示引擎
+│  └─ app.js               # 交互逻辑与本地/在线自适应
 ├─ scripts/
 │  ├─ run_demo.ps1         # 启动试用
 │  └─ validate.ps1         # 运行验收

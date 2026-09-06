@@ -1,8 +1,10 @@
 # 基于5G流量与轨迹融合的海域作业智能感知及预警平台
 
 作者：非增程式柠檬
-版本：V0.4
+版本：V0.5
 定位：面向命题企业的海域通信智能感知与网络保障试点交付包
+
+说明：本次仅升级GitHub试用网页与启动方式；仓库中的已提交项目计划书保持V0.4原文件不变。
 
 这是面向海上通信运营、政企客户服务、海洋治理协同和行业数据产品化的可运行试用项目。当前版本已形成“仿真数据 → 5G流量与船舶轨迹时空融合 → 海域热度 → 作业画像 → 联合预警 → 网络资源建议 → 交互导出”的企业验证闭环。
 
@@ -10,6 +12,8 @@
 
 - 公开仓库：<https://github.com/leeeeclllerrcc/marine-5g-traffic-awareness>
 - 完整项目下载：<https://github.com/leeeeclllerrcc/marine-5g-traffic-awareness/archive/refs/heads/main.zip>
+- 免安装在线试用（GitHub Pages）：<https://leeeeclllerrcc.github.io/marine-5g-traffic-awareness/>
+- 在线试用备用入口：<https://raw.githack.com/leeeeclllerrcc/marine-5g-traffic-awareness/main/>
 - 企业评审人员无需登录即可在线浏览和下载；技术团队也可执行 `git clone https://github.com/leeeeclllerrcc/marine-5g-traffic-awareness.git`。
 
 ## 目录
@@ -22,10 +26,18 @@
 
 ## 快速试用
 
-1. 进入 `prototype/`。
-2. 执行 `powershell -ExecutionPolicy Bypass -File .\scripts\run_demo.ps1`。
-3. 浏览器打开 `http://127.0.0.1:8765/`。
-4. 切换场景、拖动时间轴、点击网格/船舶/告警，最后导出当前状态。
+### 方式一：直接在线试用
+
+打开上方“免安装在线试用”链接，无需下载、无需Python、无需启动后台服务。若GitHub Pages尚在首次发布，可先使用备用入口。
+
+### 方式二：下载后双击启动
+
+1. 下载并解压完整项目。
+2. 在项目根目录双击 `双击启动试用平台.cmd`（英文系统也可双击 `START_DEMO.cmd`）。
+3. 程序会自动启动本地分析引擎并打开浏览器；无需手动输入 `127.0.0.1`。
+4. 需要关闭后台时，双击 `停止试用平台.cmd`。
+
+进入平台后，可切换场景、拖动时间轴、点击网格/船舶/告警，并导出当前状态。`127.0.0.1:8765` 是本机服务地址，只有在双击启动器后才可访问，不是公网网址。
 
 ## 已交付能力
 

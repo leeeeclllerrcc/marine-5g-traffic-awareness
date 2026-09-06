@@ -14,7 +14,7 @@ from generate_data import SCENARIOS, generate_records  # noqa: E402
 def main() -> None:
     baseline_vessels, baseline_grids = generate_records("baseline")
     lines = [
-        "# 仿真验证报告（V0.4）",
+        "# 仿真验证报告（V0.5）",
         "",
         "作者：非增程式柠檬（本项目原创成果唯一作者与权利主体）  ",
         f"生成日期：{date.today().isoformat()}  ",

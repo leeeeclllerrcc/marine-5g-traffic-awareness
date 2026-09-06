@@ -41,7 +41,7 @@ ENGINE = Engine()
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "Marine5GOps/0.4"
+    server_version = "Marine5GOps/0.5"
 
     def _send(self, content: bytes, content_type: str = "text/html; charset=utf-8", status: int = 200):
         self.send_response(status)
@@ -58,7 +58,7 @@ class Handler(BaseHTTPRequestHandler):
                 "ok": True,
                 "author": "非增程式柠檬",
                 "authorship": "本项目原创内容唯一作者与权利主体：非增程式柠檬",
-                "version": "0.4",
+                "version": "0.5",
             }, ensure_ascii=False).encode(), "application/json; charset=utf-8")
             return
         if parsed.path == "/api/state":

@@ -1,0 +1,10 @@
+project_author: 非增程式柠檬
+project_version: V0.4
+delivery_mode: enterprise_pilot
+random_seed: 20260906
+time_window_minutes: 5
+grid_rows: 12
+grid_cols: 12
+num_vessels: 80
+alert_recall_target: 0.85
+hotspot_accuracy_target: 0.85

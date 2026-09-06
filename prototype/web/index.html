@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>海域智能感知 · 试用版</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">M5</div>
+        <div>
+          <p class="eyebrow">MARINE 5G OPERATIONS</p>
+          <h1>海域智能感知 <span>试用版</span></h1>
+        </div>
+      </div>
+      <div class="topbar-meta">
+        <span class="live-dot"></span><span>仿真数据实时推演</span>
+        <span class="divider"></span>
+        <span>作者：非增程式柠檬</span>
+      </div>
+    </header>
+
+    <section class="hero-row">
+      <div>
+        <p class="eyebrow accent">运营商海上业务洞察</p>
+        <h2>把“哪里有船”升级为“哪里有通信需求、哪里要提前保障”</h2>
+        <p class="hero-copy">融合5G流量、船舶轨迹与时序异常，形成可解释的海域热度和作业画像。</p>
+      </div>
+      <div class="scenario-note">
+        <span class="note-label">当前推演</span>
+        <strong id="scenario-label">正常基线</strong>
+        <small id="scenario-description">拖动时间轴或切换场景，观察流量与轨迹如何联动。</small>
+      </div>
+    </section>
+
+    <section class="controlbar" aria-label="推演控制">
+      <label class="control-field">推演场景
+        <select id="scenario-select" class="control-select">
+          <option value="baseline">正常基线</option>
+          <option value="fishing_burst">捕捞热度上升</option>
+          <option value="fleet_gather">船舶群聚</option>
+          <option value="comms_outage">通信中断</option>
+          <option value="uplink_surge">直播上行激增</option>
+        </select>
+      </label>
+      <button id="play-button" type="button" class="primary-button">▶ 播放推演</button>
+      <div class="time-control">
+        <label for="time-slider">时间窗</label>
+        <input id="time-slider" type="range" min="0" max="287" value="150" />
+        <output id="time-output" for="time-slider">12:30</output>
+      </div>
+      <button id="export-button" type="button" class="ghost-button">导出当前状态</button>
+    </section>
+
+    <section class="kpi-grid" aria-label="关键指标">
+      <article class="kpi-card"><div class="kpi-label">高热度网格</div><div id="kpi-hotspots" class="kpi-value">—</div><div class="kpi-meta">/ 144 个监测网格</div></article>
+      <article class="kpi-card"><div class="kpi-label">活跃船舶</div><div id="kpi-vessels" class="kpi-value">—</div><div class="kpi-meta">轨迹与流量已对齐</div></article>
+      <article class="kpi-card"><div class="kpi-label">上下行流量</div><div id="kpi-throughput" class="kpi-value">—</div><div class="kpi-meta">MB / 当前5分钟窗</div></article>
+      <article class="kpi-card alert-kpi"><div class="kpi-label">联合预警</div><div id="kpi-alerts" class="kpi-value">—</div><div class="kpi-meta">流量证据 + 轨迹证据</div></article>
+    </section>
+
+    <section class="main-grid">
+      <article class="panel map-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow">SPATIAL DEMAND FIELD</p><h3>海域通信需求热力</h3></div>
+          <div class="legend" aria-label="热度图例"><span><i class="legend-dot high"></i>高</span><span><i class="legend-dot medium"></i>中</span><span><i class="legend-dot low"></i>低</span><span><i class="legend-dot none"></i>非热点</span></div>
+        </div>
+        <div class="map-wrap">
+          <svg id="map-svg" viewBox="0 0 960 560" role="img" aria-label="仿真海域网格热力图与船舶轨迹"></svg>
+          <div class="map-caption"><span>仿真海域网格 / 12 × 12</span><span>点击网格或船舶查看证据</span></div>
+        </div>
+      </article>
+
+      <aside class="panel detail-panel">
+        <div class="panel-heading"><div><p class="eyebrow">SELECTED EVIDENCE</p><h3 id="detail-title">选择一个网格</h3></div><span id="detail-badge" class="status-badge">等待选择</span></div>
+        <div id="detail-content" class="detail-content">
+          <p class="empty-state">点击左侧热力网格、船舶轨迹或下方告警记录，查看流量、轨迹和推断证据。</p>
+        </div>
+        <div class="recommendation" id="recommendation-box"><p class="eyebrow">NETWORK ACTION</p><strong id="recommendation-type">—</strong><p id="recommendation-text">—</p></div>
+      </aside>
+    </section>
+
+    <section class="lower-grid">
+      <article class="panel trend-panel">
+        <div class="panel-heading"><div><p class="eyebrow">TIME SERIES</p><h3>流量趋势与负载</h3></div><div class="trend-legend"><span><i class="line-swatch up"></i>上行 MB</span><span><i class="line-swatch down"></i>下行 MB</span><span><i class="line-swatch load"></i>平均负载 %</span></div></div>
+        <svg id="trend-svg" viewBox="0 0 900 260" role="img" aria-label="过去24个时间窗的流量和负载趋势"></svg>
+      </article>
+
+      <article class="panel alerts-panel">
+        <div class="panel-heading"><div><p class="eyebrow">ALERT QUEUE</p><h3>联合预警队列</h3></div><span id="alert-count-label" class="count-label">—</span></div>
+        <div class="table-wrap"><table><thead><tr><th>等级</th><th>网格</th><th>类型</th><th>证据</th></tr></thead><tbody id="alerts-body"></tbody></table></div>
+      </article>
+    </section>
+
+    <footer class="footer"><span>海域智能感知及预警平台 · Demo V0.4 · 非增程式柠檬原创</span><span>仿真数据仅用于方法验证，不代表生产网络结论</span></footer>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

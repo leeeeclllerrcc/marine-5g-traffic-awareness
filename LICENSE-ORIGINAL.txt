@@ -1,0 +1,7 @@
+Copyright (c) 2026 非增程式柠檬
+
+All rights reserved.
+
+The original materials in this project may not be copied, modified, distributed, sublicensed, or used in another project without prior written permission from the author.
+
+This notice does not change or override the licenses of third-party software, data, documentation, or trademarks listed in NOTICE-THIRDPARTY.md.
